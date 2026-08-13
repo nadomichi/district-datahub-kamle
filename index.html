@@ -470,7 +470,7 @@
             loadForms();
         }
 
-        // Parse CSV to JSON (handles quoted fields with commas)
+        // Parse CSV to JSON (handles quoted fields and sparse rows)
         function parseCSV(csvText) {
             const lines = csvText.trim().split('\n');
             if (lines.length < 2) {
@@ -486,9 +486,16 @@
                 if (!lines[i].trim()) continue;
 
                 const values = parseCSVLine(lines[i]);
-                if (values.length >= 4 && values[0]) {
+
+                // Accept any row with at least a form name (column A)
+                if (values[0] && values[0].trim()) {
+                    // Pad row with empty values if it has fewer columns than header
+                    while (values.length < headers.length) {
+                        values.push('');
+                    }
+
                     forms.push({
-                        name: values[0],
+                        name: values[0] || '',
                         category: values[1] || 'Other',
                         description: values[2] || '',
                         link: values[3] || '#',
@@ -497,6 +504,7 @@
                     });
                 }
             }
+            console.log('✅ Total forms after parsing:', forms.length);
             return forms;
         }
 
