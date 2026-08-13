@@ -99,9 +99,9 @@
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 6px;
-            font-size: 0.9em;
+            font-size: 0.75em;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 500;
@@ -311,24 +311,43 @@
         <!-- Header -->
         <div class="header">
             <div class="header-icon">
-                <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 70px;">
-                    <!-- Ashoka Chakra (Wheel) -->
-                    <circle cx="50" cy="50" r="25" fill="none" stroke="#000080" stroke-width="1.5"/>
-                    <!-- 24 Spokes -->
-                    <g stroke="#000080" stroke-width="1">
-                        <line x1="50" y1="25" x2="50" y2="10"/>
-                        <line x1="50" y1="75" x2="50" y2="90"/>
-                        <line x1="75" y1="50" x2="90" y2="50"/>
-                        <line x1="25" y1="50" x2="10" y2="50"/>
-                        <line x1="70.7" y1="29.3" x2="80" y2="19.3"/>
-                        <line x1="29.3" y1="70.7" x2="20" y2="80"/>
-                        <line x1="70.7" y1="70.7" x2="80" y2="80"/>
-                        <line x1="29.3" y1="29.3" x2="20" y2="20"/>
+                <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" style="width: 70px; height: 80px;">
+                    <!-- Three Lions (Saffron, White, Green) -->
+                    <!-- Left Lion (Saffron) -->
+                    <g fill="#FF9933">
+                        <circle cx="60" cy="40" r="18"/>
+                        <ellipse cx="45" cy="55" rx="12" ry="15"/>
+                        <ellipse cx="75" cy="55" rx="12" ry="15"/>
                     </g>
-                    <!-- Lion Capital Base -->
-                    <ellipse cx="50" cy="95" rx="20" ry="8" fill="#000080" opacity="0.3"/>
-                    <!-- Text: Satyamev Jayate -->
-                    <text x="50" y="115" font-size="6" text-anchor="middle" fill="#000080" font-weight="bold">सत्यमेव जयते</text>
+                    <!-- Center Lion (White/Black) -->
+                    <g fill="#000000">
+                        <circle cx="100" cy="35" r="20"/>
+                        <ellipse cx="80" cy="55" rx="14" ry="18"/>
+                        <ellipse cx="120" cy="55" rx="14" ry="18"/>
+                    </g>
+                    <!-- Right Lion (Green) -->
+                    <g fill="#138808">
+                        <circle cx="140" cy="40" r="18"/>
+                        <ellipse cx="125" cy="55" rx="12" ry="15"/>
+                        <ellipse cx="155" cy="55" rx="12" ry="15"/>
+                    </g>
+                    <!-- Base Platform -->
+                    <rect x="30" y="80" width="140" height="30" fill="#F3B81F" stroke="#000" stroke-width="1"/>
+                    <!-- Ashoka Chakra (Blue Wheel) -->
+                    <circle cx="100" cy="100" r="22" fill="none" stroke="#0033FF" stroke-width="3"/>
+                    <!-- 24 Spokes -->
+                    <g stroke="#0033FF" stroke-width="1">
+                        <line x1="100" y1="78" x2="100" y2="58"/>
+                        <line x1="100" y1="122" x2="100" y2="142"/>
+                        <line x1="122" y1="100" x2="142" y2="100"/>
+                        <line x1="78" y1="100" x2="58" y2="100"/>
+                        <line x1="115" y1="85" x2="130" y2="70"/>
+                        <line x1="85" y1="115" x2="70" y2="130"/>
+                        <line x1="115" y1="115" x2="130" y2="130"/>
+                        <line x1="85" y1="85" x2="70" y2="70"/>
+                    </g>
+                    <!-- Satyamev Jayate Text -->
+                    <text x="100" y="215" font-size="14" font-weight="bold" text-anchor="middle" fill="#000">सत्यमेव जयते</text>
                 </svg>
             </div>
             <h1>District Administration Kamle</h1>
