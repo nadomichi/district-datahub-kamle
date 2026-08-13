@@ -348,10 +348,18 @@
     </div>
 
     <script>
-        // API endpoint for fetching forms (works on Vercel or local)
-        const API_URL = '/api/fetch-forms';
+        // Configuration
+        const SHEET_ID = '1oR8fSNik_d0EdRhUyRbDnvDgaueE0_LMloTUWsOGVq0';
+        const SHEET_GID = '1199234875';
 
-        // Fallback to local CSV if API fails
+        // Google Sheets CSV export URL
+        const GOOGLE_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
+
+        // CORS proxy for fetching Google Sheets
+        const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+        const PROXIED_CSV_URL = CORS_PROXY + encodeURIComponent(GOOGLE_CSV_URL);
+
+        // Fallback to local CSV if Google Sheets fails
         const LOCAL_CSV_URL = '/forms_data.csv';
 
         // Category Icons (Map category names to emojis)
@@ -386,10 +394,10 @@
                 } else {
                     console.log('🔄 Cache expired, fetching fresh data...');
 
-                    // Try API endpoint first (works on Vercel or local)
+                    // Try Google Sheets via CORS proxy first
                     try {
-                        console.log('📡 Fetching from API endpoint...');
-                        const response = await fetch(API_URL, {
+                        console.log('📡 Fetching from Google Sheets via CORS proxy...');
+                        const response = await fetch(PROXIED_CSV_URL, {
                             method: 'GET',
                             headers: { 'Accept': 'text/csv' }
                         });
@@ -399,16 +407,16 @@
                         }
 
                         csvText = await response.text();
-                        source = 'API (server-side)';
-                        console.log('✅ API loaded successfully!');
+                        source = 'Google Sheets (live)';
+                        console.log('✅ Google Sheets loaded successfully!');
                         console.log('💾 Saving to cache...');
 
-                        // Save to cache
+                        // Save to cache (but with shorter duration for live updates)
                         localStorage.setItem(CACHE_KEY, csvText);
                         localStorage.setItem(CACHE_TIME_KEY, now.toString());
-                    } catch (apiError) {
+                    } catch (gsError) {
                         // Fallback to local CSV
-                        console.warn('⚠️ API failed:', apiError.message);
+                        console.warn('⚠️ Google Sheets failed:', gsError.message);
                         console.log('📂 Falling back to local CSV...');
 
                         const localResponse = await fetch(LOCAL_CSV_URL);
