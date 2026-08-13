@@ -310,9 +310,29 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="header-icon">📋</div>
-            <h1>Kamle District Administration</h1>
-            <p>Government Certificates & Forms Portal</p>
+            <div class="header-icon">
+                <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 70px;">
+                    <!-- Ashoka Chakra (Wheel) -->
+                    <circle cx="50" cy="50" r="25" fill="none" stroke="#000080" stroke-width="1.5"/>
+                    <!-- 24 Spokes -->
+                    <g stroke="#000080" stroke-width="1">
+                        <line x1="50" y1="25" x2="50" y2="10"/>
+                        <line x1="50" y1="75" x2="50" y2="90"/>
+                        <line x1="75" y1="50" x2="90" y2="50"/>
+                        <line x1="25" y1="50" x2="10" y2="50"/>
+                        <line x1="70.7" y1="29.3" x2="80" y2="19.3"/>
+                        <line x1="29.3" y1="70.7" x2="20" y2="80"/>
+                        <line x1="70.7" y1="70.7" x2="80" y2="80"/>
+                        <line x1="29.3" y1="29.3" x2="20" y2="20"/>
+                    </g>
+                    <!-- Lion Capital Base -->
+                    <ellipse cx="50" cy="95" rx="20" ry="8" fill="#000080" opacity="0.3"/>
+                    <!-- Text: Satyamev Jayate -->
+                    <text x="50" y="115" font-size="6" text-anchor="middle" fill="#000080" font-weight="bold">सत्यमेव जयते</text>
+                </svg>
+            </div>
+            <h1>District Administration Kamle</h1>
+            <p>Government Forms Portal</p>
         </div>
 
         <!-- Search -->
@@ -328,10 +348,10 @@
             <div class="search-examples">
                 <p class="examples-title">💡 Try searching:</p>
                 <div class="examples-grid">
-                    <button class="example-btn" onclick="searchExample('Birth')">Birth Certificate</button>
-                    <button class="example-btn" onclick="searchExample('Residential')">Residential</button>
-                    <button class="example-btn" onclick="searchExample('Educational')">Educational</button>
-                    <button class="example-btn" onclick="searchExample('Business')">Business</button>
+                    <button class="example-btn" onclick="searchExample('ST')">ST (Scheduled Tribe)</button>
+                    <button class="example-btn" onclick="searchExample('PRC')">PRC (Residence Certificate)</button>
+                    <button class="example-btn" onclick="searchExample('Income')">Income</button>
+                    <button class="example-btn" onclick="searchExample('Tender')">Tender Documents</button>
                 </div>
             </div>
         </div>
@@ -367,7 +387,11 @@
             'Business': '💼',
             'Agriculture': '🌾',
             'Health': '🏥',
-            'District Admin': '👔',
+            'District Admin': '🏢',
+            'ST': '👥',
+            'PRC': '📝',
+            'Income': '💰',
+            'Tender': '📑',
             'Other': '📄'
         };
 
