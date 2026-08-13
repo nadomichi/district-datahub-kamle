@@ -1,0 +1,13 @@
+{
+  "name": "kamle-district-forms-portal",
+  "version": "1.0.0",
+  "description": "Government Forms Portal for Kamle District",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build needed'"
+  },
+  "keywords": ["forms", "government", "kamle"],
+  "author": "",
+  "license": "MIT"
+}
