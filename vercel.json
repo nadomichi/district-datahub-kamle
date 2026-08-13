@@ -1,20 +1,3 @@
 {
-  "version": 2,
-  "buildCommand": "echo 'Build complete'",
-  "functions": {
-    "api/*.js": {
-      "memory": 128,
-      "maxDuration": 30
-    }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/forms_portal.html"
-    }
-  ]
+  "version": 2
 }
