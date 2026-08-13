@@ -355,9 +355,30 @@
         // Google Sheets CSV export URL
         const GOOGLE_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
 
-        // CORS proxy for fetching Google Sheets
-        const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-        const PROXIED_CSV_URL = CORS_PROXY + encodeURIComponent(GOOGLE_CSV_URL);
+        // CORS proxies (try multiple for reliability)
+        const CORS_PROXIES = [
+            'https://thingproxy.freeboard.io/fetch/',
+            'https://api.allorigins.win/raw?url=',
+        ];
+
+        // Try each proxy until one works
+        async function tryProxies() {
+            for (let proxy of CORS_PROXIES) {
+                const url = proxy.includes('?url=') ?
+                    proxy + encodeURIComponent(GOOGLE_CSV_URL) :
+                    proxy + GOOGLE_CSV_URL;
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        console.log('✅ Using proxy:', proxy);
+                        return await response.text();
+                    }
+                } catch (e) {
+                    console.warn('❌ Proxy failed:', proxy);
+                }
+            }
+            throw new Error('All CORS proxies failed');
+        }
 
         // Fallback to local CSV if Google Sheets fails
         const LOCAL_CSV_URL = '/forms_data.csv';
@@ -394,19 +415,10 @@
                 } else {
                     console.log('🔄 Cache expired, fetching fresh data...');
 
-                    // Try Google Sheets via CORS proxy first
+                    // Try Google Sheets via CORS proxies
                     try {
-                        console.log('📡 Fetching from Google Sheets via CORS proxy...');
-                        const response = await fetch(PROXIED_CSV_URL, {
-                            method: 'GET',
-                            headers: { 'Accept': 'text/csv' }
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP ${response.status}`);
-                        }
-
-                        csvText = await response.text();
+                        console.log('📡 Fetching from Google Sheets via CORS proxies...');
+                        csvText = await tryProxies();
                         source = 'Google Sheets (live)';
                         console.log('✅ Google Sheets loaded successfully!');
                         console.log('💾 Saving to cache...');
