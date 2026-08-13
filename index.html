@@ -348,39 +348,15 @@
     </div>
 
     <script>
-        // Configuration
+        // Google Sheets API Configuration
         const SHEET_ID = '1oR8fSNik_d0EdRhUyRbDnvDgaueE0_LMloTUWsOGVq0';
-        const SHEET_GID = '1199234875';
+        const API_KEY = 'AIzaSyCO8V-HmJ6gZE_i_MoRdnMtzHh1EHGxodM';
+        const RANGE = 'Kamle_District_Forms_Template!A:F'; // All columns A-F
 
-        // Google Sheets CSV export URL
-        const GOOGLE_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
+        // Google Sheets API URL
+        const SHEETS_API_URL = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(RANGE)}?key=${API_KEY}`;
 
-        // CORS proxies (try multiple for reliability)
-        const CORS_PROXIES = [
-            'https://thingproxy.freeboard.io/fetch/',
-            'https://api.allorigins.win/raw?url=',
-        ];
-
-        // Try each proxy until one works
-        async function tryProxies() {
-            for (let proxy of CORS_PROXIES) {
-                const url = proxy.includes('?url=') ?
-                    proxy + encodeURIComponent(GOOGLE_CSV_URL) :
-                    proxy + GOOGLE_CSV_URL;
-                try {
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        console.log('✅ Using proxy:', proxy);
-                        return await response.text();
-                    }
-                } catch (e) {
-                    console.warn('❌ Proxy failed:', proxy);
-                }
-            }
-            throw new Error('All CORS proxies failed');
-        }
-
-        // Fallback to local CSV if Google Sheets fails
+        // Fallback to local CSV if API fails
         const LOCAL_CSV_URL = '/forms_data.csv';
 
         // Category Icons (Map category names to emojis)
@@ -401,7 +377,7 @@
                 let source = 'Unknown';
                 const CACHE_KEY = 'forms_data_cache';
                 const CACHE_TIME_KEY = 'forms_cache_time';
-                const CACHE_DURATION = 1 * 60 * 60 * 1000; // Cache for 1 hour
+                const CACHE_DURATION = 30 * 60 * 1000; // Cache for 30 minutes (live updates)
 
                 // Check if cached data is still valid
                 const cachedData = localStorage.getItem(CACHE_KEY);
@@ -415,20 +391,42 @@
                 } else {
                     console.log('🔄 Cache expired, fetching fresh data...');
 
-                    // Try Google Sheets via CORS proxies
+                    // Try Google Sheets API (real-time!)
                     try {
-                        console.log('📡 Fetching from Google Sheets via CORS proxies...');
-                        csvText = await tryProxies();
-                        source = 'Google Sheets (live)';
-                        console.log('✅ Google Sheets loaded successfully!');
-                        console.log('💾 Saving to cache...');
+                        console.log('📡 Fetching from Google Sheets API...');
+                        const response = await fetch(SHEETS_API_URL);
 
-                        // Save to cache (but with shorter duration for live updates)
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}`);
+                        }
+
+                        const data = await response.json();
+
+                        if (!data.values || data.values.length === 0) {
+                            throw new Error('No data in Google Sheet');
+                        }
+
+                        // Convert API response to CSV format
+                        csvText = data.values.map(row =>
+                            row.map(cell => {
+                                // Escape commas and quotes in CSV
+                                if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"'))) {
+                                    return `"${cell.replace(/"/g, '""')}"`;
+                                }
+                                return cell || '';
+                            }).join(',')
+                        ).join('\n');
+
+                        source = 'Google Sheets API (live) 🔄';
+                        console.log('✅ Google Sheets API loaded successfully!');
+                        console.log('💾 Saving to cache (30 min for live updates)...');
+
+                        // Cache for 30 minutes (shorter for real-time feel)
                         localStorage.setItem(CACHE_KEY, csvText);
                         localStorage.setItem(CACHE_TIME_KEY, now.toString());
                     } catch (gsError) {
                         // Fallback to local CSV
-                        console.warn('⚠️ Google Sheets failed:', gsError.message);
+                        console.warn('⚠️ Google Sheets API failed:', gsError.message);
                         console.log('📂 Falling back to local CSV...');
 
                         const localResponse = await fetch(LOCAL_CSV_URL);
