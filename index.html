@@ -23,20 +23,22 @@
             margin: 0 auto;
         }
 
-        /* Professional Banner with Image */
+        /* Professional Banner Design */
         .banner {
-            background-image: url('./banner.jpg');
+            background: linear-gradient(135deg, #1e5a96 0%, #2a7ab8 50%, #1a4f7f 100%);
+            background-image:
+                linear-gradient(135deg, rgba(30, 90, 150, 0.85) 0%, rgba(42, 122, 184, 0.85) 50%, rgba(26, 79, 127, 0.85) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:0.3"/><stop offset="100%" style="stop-color:%23E0F6FF;stop-opacity:0.5"/></linearGradient></defs><rect width="1200" height="400" fill="url(%23sky)"/><path d="M0,250 Q300,200 600,250 T1200,250 L1200,400 L0,400 Z" fill="%23228B22" opacity="0.2"/><path d="M0,300 Q400,250 800,300 T1600,300 L1600,400 L0,400 Z" fill="%2390EE90" opacity="0.15"/></svg>');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             border-radius: 12px;
-            padding: 0;
+            padding: 50px 40px;
             margin-bottom: 40px;
             box-shadow: 0 12px 40px rgba(0,0,0,0.25);
             text-align: center;
             position: relative;
             overflow: hidden;
-            min-height: 380px;
+            min-height: 280px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -50,17 +52,96 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: transparent;
+            background: radial-gradient(ellipse at top left, rgba(255,255,255,0.1), transparent 50%);
             pointer-events: none;
         }
 
         .banner > * {
-            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-emblem {
+            margin-bottom: 20px;
+        }
+
+        .banner-emblem svg {
+            width: 90px;
+            height: 110px;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+        }
+
+        .banner-title-section {
+            color: white;
+            margin: 15px 0;
+        }
+
+        .banner-subtitle-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin: 0 0 10px 0;
+            color: #e8f4f8;
+            text-transform: uppercase;
+        }
+
+        .banner-main-title {
+            font-size: 4em;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 0 0 15px 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1;
+        }
+
+        .banner-tagline {
+            font-size: 1em;
+            font-weight: 500;
+            color: #d4e8f0;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .banner-portal-badge {
+            background: rgba(26, 79, 127, 0.9);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 20px;
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         @media (max-width: 768px) {
             .banner {
-                min-height: 250px;
+                padding: 35px 20px;
+                min-height: 320px;
+            }
+
+            .banner-emblem svg {
+                width: 70px;
+                height: 85px;
+            }
+
+            .banner-main-title {
+                font-size: 2.5em;
+            }
+
+            .banner-subtitle-text {
+                font-size: 0.95em;
+                letter-spacing: 2px;
+            }
+
+            .banner-tagline {
+                font-size: 0.9em;
+            }
+
+            .banner-portal-badge {
+                font-size: 1em;
+                padding: 10px 25px;
             }
         }
 
@@ -729,7 +810,7 @@
                     <p style="text-align: left; font-size: 0.9em; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-family: monospace; color: #fff;">
                         <strong>Error:</strong> ${error.message}<br><br>
                         <strong>CSV URL:</strong><br>
-                        ${SHEETS_API_URL}<br><br>
+                        ${CSV_URL}<br><br>
                         <strong>Troubleshooting:</strong><br>
                         1. Check that Google Sheet is published as CSV<br>
                         2. Verify Sheet ID is correct<br>
