@@ -367,8 +367,18 @@
             'Business': '💼',
             'Agriculture': '🌾',
             'Health': '🏥',
+            'District Admin': '👔',
             'Other': '📄'
         };
+
+        // Get icon for any category (predefined or custom)
+        function getCategoryIcon(category) {
+            if (categoryIcons[category]) {
+                return categoryIcons[category];
+            }
+            // For custom/unknown categories, use a generic icon
+            return '📋';
+        }
 
         // Fetch and parse CSV with caching (API first, fallback to local)
         async function loadForms() {
@@ -566,7 +576,7 @@
             let html = '';
 
             Object.entries(grouped).forEach(([category, categoryForms]) => {
-                const icon = categoryIcons[category] || '📋';
+                const icon = getCategoryIcon(category);
                 html += `
                     <div class="category-section">
                         <div class="category-title">
