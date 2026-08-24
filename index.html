@@ -213,22 +213,23 @@
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.8em;
-            font-weight: 600;
+            font-weight: 700;
+            color: #dc3545;
         }
 
         .status-active {
             background: #d4edda;
-            color: #155724;
+            color: #dc3545;
         }
 
         .status-coming {
             background: #fff3cd;
-            color: #856404;
+            color: #dc3545;
         }
 
         .status-updated {
             background: #d1ecf1;
-            color: #0c5460;
+            color: #dc3545;
         }
 
         /* Download Button */
@@ -421,6 +422,9 @@
             <p>📞 For assistance: Contact District Administrative Office</p>
             <p>⏰ Available: 9 AM - 5 PM (Monday - Saturday)</p>
             <p style="margin-top: 20px; opacity: 0.7;">Government Forms Repository | Kamle District</p>
+            <p style="margin-top: 25px; font-size: 0.85em; opacity: 0.6; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px;">
+                An IT initiative of the District Administration, Kamle, powered by the Department of IT&C, Kamle Unit.
+            </p>
         </div>
     </div>
 
@@ -687,7 +691,7 @@
                         ${form.date ? `<span>${form.date}</span>` : ''}
                     </div>
                     <a href="${form.link}" target="_blank" class="download-btn">
-                        ⬇️ Download Here
+                        ⬇️ Download Form
                     </a>
                 </div>
             `;
