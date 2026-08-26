@@ -472,7 +472,7 @@
                 let source = 'Unknown';
                 const CACHE_KEY = 'forms_data_cache';
                 const CACHE_TIME_KEY = 'forms_cache_time';
-                const CACHE_DURATION = 5 * 60 * 1000; // Cache for 5 minutes (faster updates)
+                const CACHE_DURATION = 1 * 60 * 1000; // Cache for 1 minute (real-time updates)
 
                 // Check if cached data is still valid
                 const cachedData = localStorage.getItem(CACHE_KEY);
@@ -691,7 +691,7 @@
                         ${form.date ? `<span>${form.date}</span>` : ''}
                     </div>
                     <a href="${form.link}" target="_blank" class="download-btn">
-                        ⬇️ Download Here
+                        ⬇️ Download Form
                     </a>
                 </div>
             `;
