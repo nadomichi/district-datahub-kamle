@@ -472,7 +472,7 @@
                 let source = 'Unknown';
                 const CACHE_KEY = 'forms_data_cache';
                 const CACHE_TIME_KEY = 'forms_cache_time';
-                const CACHE_DURATION = 1 * 60 * 1000; // Cache for 1 minute (real-time updates)
+                const CACHE_DURATION = 0; // No cache - real-time updates (every page load fetches fresh data)
 
                 // Check if cached data is still valid
                 const cachedData = localStorage.getItem(CACHE_KEY);
@@ -763,6 +763,37 @@
 
         // Load forms on page load
         window.addEventListener('load', loadForms);
+
+        // Auto-refresh every 30 seconds for real-time updates
+        setInterval(() => {
+            console.log('🔄 Auto-refreshing data from Google Sheets...');
+            loadForms();
+
+            // Update last refresh time in UI
+            const timestamp = new Date().toLocaleTimeString();
+            const refreshIndicator = document.getElementById('lastRefreshTime');
+            if (refreshIndicator) {
+                refreshIndicator.textContent = `Last updated: ${timestamp}`;
+            }
+        }, 30000); // 30 seconds
+
+        // Show initial refresh time
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchContainer = document.querySelector('.search-container');
+            if (searchContainer) {
+                const indicator = document.createElement('div');
+                indicator.id = 'lastRefreshTime';
+                indicator.style.cssText = `
+                    font-size: 0.75em;
+                    color: #666;
+                    margin-top: 8px;
+                    text-align: center;
+                    font-style: italic;
+                `;
+                indicator.textContent = 'Auto-refreshing every 30 seconds...';
+                searchContainer.parentNode.insertBefore(indicator, searchContainer.nextSibling);
+            }
+        });
     </script>
 </body>
 </html>
