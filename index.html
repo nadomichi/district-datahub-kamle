@@ -289,6 +289,27 @@
             margin: 5px 0;
         }
 
+        /* Visitor Counter */
+        .visitor-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 10px 22px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            font-size: 0.95em;
+        }
+
+        .visitor-count {
+            font-weight: 700;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+            font-variant-numeric: tabular-nums;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
@@ -422,6 +443,13 @@
             <p>📞 For assistance: Contact District Administrative Office</p>
             <p>⏰ Available: 9 AM - 5 PM (Monday - Saturday)</p>
             <p style="margin-top: 20px; opacity: 0.7;">Government Forms Repository | Kamle District</p>
+
+            <!-- Visitor Counter -->
+            <div class="visitor-counter" title="Total visitors to this portal">
+                <span>👥 Visitors:</span>
+                <span class="visitor-count" id="visitorCount">…</span>
+            </div>
+
             <p style="margin-top: 25px; font-size: 0.85em; opacity: 0.6; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px;">
                 An IT initiative of the District Administration, Kamle, powered by the Department of IT&C, Kamle Unit.
             </p>
@@ -760,6 +788,44 @@
                 </div>
             `;
         }
+
+        // Visitor Counter (Abacus - free, no account, shared across all visitors)
+        const COUNTER_NAMESPACE = 'kamle-district-forms-portal';
+        const COUNTER_KEY = 'visitors';
+        const VISITED_FLAG = 'kamle_portal_visited';
+        const COUNTER_API = 'https://abacus.jasoncameron.dev';
+
+        async function updateVisitorCounter() {
+            const el = document.getElementById('visitorCount');
+            if (!el) return;
+
+            // Count each browser once (unique visitors, not page reloads)
+            let isNewVisitor = true;
+            try {
+                isNewVisitor = !localStorage.getItem(VISITED_FLAG);
+            } catch (e) { /* storage blocked - treat as new */ }
+
+            // "hit" adds 1 and returns the new total; "get" only reads it
+            const action = isNewVisitor ? 'hit' : 'get';
+            const url = `${COUNTER_API}/${action}/${COUNTER_NAMESPACE}/${COUNTER_KEY}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+
+                el.textContent = Number(data.value || 0).toLocaleString('en-IN');
+
+                if (isNewVisitor) {
+                    try { localStorage.setItem(VISITED_FLAG, '1'); } catch (e) {}
+                }
+            } catch (error) {
+                console.warn('⚠️ Visitor counter unavailable:', error.message);
+                el.parentElement.style.display = 'none'; // hide quietly on failure
+            }
+        }
+
+        window.addEventListener('load', updateVisitorCounter);
 
         // Load forms on page load
         window.addEventListener('load', loadForms);
